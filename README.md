@@ -26,4 +26,6 @@ To run the Coworking_Project and start the REST API, you need to have Java and S
    `./mvnw spring-boot:run`
 
 ## Test Data
-The Coworking_Project repository already contains test data in the code. You can use this data for testing and exploration.
+The Coworking_Project repository already contains test data in the code. 
+You can use this data for testing and exploration.
+If you want to change the test data, you can simply go to file //TODO to change it.
