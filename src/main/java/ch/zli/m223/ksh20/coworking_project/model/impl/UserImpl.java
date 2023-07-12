@@ -4,8 +4,7 @@ import ch.zli.m223.ksh20.coworking_project.model.User;
 import jakarta.persistence.*;
 import java.util.UUID;
 
-@Entity
-@Table(name = "Users")
+@Entity(name = "Users")
 public class UserImpl implements User {
 
     @Id
@@ -13,10 +12,10 @@ public class UserImpl implements User {
     private String uuid;
 
     @Column(nullable = false)
-    private String first_name;
+    private String firstName;
 
     @Column(nullable = false)
-    private String last_name;
+    private String lastName;
 
     @Column(nullable = false)
     private String email;
@@ -31,12 +30,12 @@ public class UserImpl implements User {
 
     }
 
-    public UserImpl(String first_name, String last_name, String email, String passwordHash, UserRole role) {
+    public UserImpl(String first_name, String last_name, String email, String password, UserRole role) {
         uuid = UUID.randomUUID().toString();
-        this.first_name = first_name;
-        this.last_name = last_name;
+        this.firstName = first_name;
+        this.lastName = last_name;
         this.email = email;
-        this.passwordHash = passwordHash;
+        this.passwordHash = password; //Hash
         this.role = role;
     }
     @Override
@@ -44,24 +43,20 @@ public class UserImpl implements User {
         return uuid;
     }
 
-    @Override
-    public String getFirst_name() {
-        return first_name;
+    public String getFirstName() {
+        return firstName;
     }
 
-    @Override
-    public void setFirst_name(String first_name) {
-        this.first_name = first_name;
+    public void setFirstName(String first_name) {
+        this.firstName = first_name;
     }
 
-    @Override
-    public String getLast_name() {
-        return last_name;
+    public String getLastName() {
+        return lastName;
     }
 
-    @Override
-    public void setLast_name(String last_name) {
-        this.last_name = last_name;
+    public void setLastName(String last_name) {
+        this.lastName = last_name;
     }
 
     @Override

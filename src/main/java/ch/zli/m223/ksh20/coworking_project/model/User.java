@@ -5,10 +5,10 @@ import ch.zli.m223.ksh20.coworking_project.model.impl.UserRole;
 public interface User {
 
     String getUuid();
-    String getFirst_name();
-    void setFirst_name(String first_name);
-    String getLast_name();
-    void setLast_name(String last_name);
+    String getFirstName();
+    void setFirstName(String first_name);
+    String getLastName();
+    void setLastName(String last_name);
     String getEmail();
     void setEmail(String email);
     UserRole getRole();
