@@ -4,12 +4,15 @@ import ch.zli.m223.ksh20.coworking_project.model.User;
 import ch.zli.m223.ksh20.coworking_project.model.impl.UserRole;
 
 public class UserDto {
+
+    public String uuid;
     public String firstName;
     public String lastName;
     public String email;
     public UserRole role;
 
     public UserDto(User user) {
+        uuid = user.getUuid();
         firstName = user.getFirstName();
         lastName =user.getLastName();
         email = user.getEmail();
