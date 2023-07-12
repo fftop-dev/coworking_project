@@ -1,8 +1,14 @@
 package ch.zli.m223.ksh20.coworking_project.model.impl;
 
-import ch.zli.m223.ksh20.coworking_project.model.User;
-import jakarta.persistence.*;
+import java.util.List;
 import java.util.UUID;
+
+import ch.zli.m223.ksh20.coworking_project.model.User;
+import jakarta.persistence.CascadeType;
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.Id;
+import jakarta.persistence.OneToMany;
 
 @Entity(name = "Users")
 public class UserImpl implements User {
@@ -26,6 +32,9 @@ public class UserImpl implements User {
     @Column(nullable = false)
     private UserRole role;
 
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
+    private List<ReservationImpl> reservations;
+
     protected UserImpl() {
 
     }
@@ -35,9 +44,10 @@ public class UserImpl implements User {
         this.firstName = first_name;
         this.lastName = last_name;
         this.email = email;
-        this.passwordHash = password; //Hash
+        this.passwordHash = password; // Hash
         this.role = role;
     }
+
     @Override
     public String getUuid() {
         return uuid;
@@ -85,8 +95,12 @@ public class UserImpl implements User {
     }
 
     @Override
-    public boolean checkPassword(String passwordHash){
+    public boolean checkPassword(String passwordHash) {
         return this.passwordHash.equals(passwordHash);
     }
-}
 
+    @Override
+    public List<ReservationImpl> getReservations() {
+        return reservations;
+    }
+}

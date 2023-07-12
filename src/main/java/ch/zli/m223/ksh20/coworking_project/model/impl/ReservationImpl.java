@@ -1,9 +1,14 @@
 package ch.zli.m223.ksh20.coworking_project.model.impl;
 
-import ch.zli.m223.ksh20.coworking_project.model.Reservation;
-import jakarta.persistence.*;
 import java.time.LocalDate;
 import java.util.UUID;
+
+import ch.zli.m223.ksh20.coworking_project.model.Reservation;
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
 
 @Entity(name = "Reservations")
 public class ReservationImpl implements Reservation {
@@ -13,7 +18,7 @@ public class ReservationImpl implements Reservation {
     private String uuid;
 
     @ManyToOne
-    @JoinColumn(name = "Users.uuid", nullable = false)
+    @JoinColumn(name = "user_uuid", referencedColumnName = "uuid", nullable = false)
     private UserImpl user;
 
     @Column(nullable = false)
@@ -25,7 +30,7 @@ public class ReservationImpl implements Reservation {
     @Column(nullable = false)
     private ReservationStatus status;
 
-    public ReservationImpl(){
+    public ReservationImpl() {
 
     }
 
