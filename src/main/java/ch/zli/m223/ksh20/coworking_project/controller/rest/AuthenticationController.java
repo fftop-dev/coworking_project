@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import ch.zli.m223.ksh20.coworking_project.security.JwtTokenProvider;
 import ch.zli.m223.ksh20.coworking_project.service.AuthenticationService;
+import ch.zli.m223.ksh20.coworking_project.service.UserService;
 
 @RestController
 @RequestMapping("/api/v1/auth")
@@ -19,6 +20,9 @@ public class AuthenticationController {
 
     @Autowired
     private JwtTokenProvider jwtTokenProvider;
+
+    @Autowired
+    private UserService userService;
 
     @PostMapping("/login")
     public ResponseEntity<?> login(@RequestParam String email, @RequestParam String password) {
@@ -33,9 +37,9 @@ public class AuthenticationController {
             return ResponseEntity.badRequest().body(e.getMessage());
         }
 
-        // TODO: generate token
+        String token = jwtTokenProvider.generateToken(userService.getUserByEmail(email));
 
-        return ResponseEntity.ok().body("Login success");
+        return ResponseEntity.ok().body(token);
     }
 
 }
