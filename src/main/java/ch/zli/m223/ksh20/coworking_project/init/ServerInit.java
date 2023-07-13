@@ -33,7 +33,11 @@ public class ServerInit implements ApplicationRunner {
         userRepository.addUser(user);
 
         ReservationImpl reservation = new ReservationImpl(user, LocalDate.now(), ReservationType.AFTERNOON);
+        ReservationImpl reservation2 = new ReservationImpl(user, LocalDate.now(), ReservationType.MORNING);
+        ReservationImpl reservation3 = new ReservationImpl(user, LocalDate.now(), ReservationType.AFTERNOON);
         reservationRepository.addReservation(reservation);
+        reservationRepository.addReservation(reservation2);
+        reservationRepository.addReservation(reservation3);
     }
 
 }

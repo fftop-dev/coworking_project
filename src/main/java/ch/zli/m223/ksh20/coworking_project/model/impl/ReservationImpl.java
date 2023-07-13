@@ -4,6 +4,7 @@ import java.time.LocalDate;
 import java.util.UUID;
 
 import ch.zli.m223.ksh20.coworking_project.model.Reservation;
+import ch.zli.m223.ksh20.coworking_project.model.User;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
@@ -73,6 +74,7 @@ public class ReservationImpl implements Reservation {
     public void setType(ReservationType type) {
         this.type = type;
     }
+
 
     public ReservationStatus getStatus() {
         return status;
