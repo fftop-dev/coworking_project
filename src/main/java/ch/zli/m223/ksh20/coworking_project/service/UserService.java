@@ -10,4 +10,6 @@ public interface UserService {
     List<User> getUserList();
 
     User createUser(UserInputDto inputDto);
+
+    User getUserByEmail(String email);
 }
