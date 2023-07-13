@@ -8,10 +8,10 @@ import ch.zli.m223.ksh20.coworking_project.model.impl.UserRole;
 
 public class UserDto extends UserNoReservationDto {
 
-    public List<ReservationDto> reservations;
+    public List<ReservationNoUserDto> reservations;
 
     public UserDto(User user) {
         super(user);
-        reservations = user.getReservations().stream().map(ReservationDto::new).collect(Collectors.toList());
+        reservations = user.getReservations().stream().map(ReservationNoUserDto::new).collect(Collectors.toList());
     }
 }
