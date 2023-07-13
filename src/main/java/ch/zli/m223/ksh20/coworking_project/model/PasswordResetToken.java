@@ -1,5 +1,7 @@
 package ch.zli.m223.ksh20.coworking_project.model;
 
+import ch.zli.m223.ksh20.coworking_project.model.impl.UserImpl;
+
 import java.time.LocalDate;
 
 import ch.zli.m223.ksh20.coworking_project.model.impl.UserImpl;

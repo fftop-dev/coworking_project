@@ -30,4 +30,9 @@ public interface User {
     boolean checkPassword(String passwordHash);
 
     List<ReservationImpl> getReservations();
+
+    public void setUuid(String uuid);
+
+    public String getPasswordHash();
+
 }

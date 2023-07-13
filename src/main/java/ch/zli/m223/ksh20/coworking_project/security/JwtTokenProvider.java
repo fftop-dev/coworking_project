@@ -46,7 +46,6 @@ public class JwtTokenProvider {
         return Jwts.parser().setSigningKey(jwtSecret).parseClaimsJws(token).getBody();
     }
 
-    // genereate secret key
     public JwtTokenProvider() {
         SecureRandom random = new SecureRandom();
         byte[] bytes = new byte[64];
