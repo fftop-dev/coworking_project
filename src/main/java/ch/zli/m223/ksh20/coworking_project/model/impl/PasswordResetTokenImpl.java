@@ -5,11 +5,9 @@ import java.util.UUID;
 
 import ch.zli.m223.ksh20.coworking_project.model.PasswordResetToken;
 import ch.zli.m223.ksh20.coworking_project.model.User;
-import jakarta.persistence.Column;
-import jakarta.persistence.Id;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.ManyToOne;
+import jakarta.persistence.*;
 
+@Entity
 public class PasswordResetTokenImpl implements PasswordResetToken {
 
     @Id
@@ -21,7 +19,7 @@ public class PasswordResetTokenImpl implements PasswordResetToken {
 
     @ManyToOne
     @JoinColumn(name = "user_uuid", referencedColumnName = "uuid", nullable = false)
-    private User user;
+    private UserImpl user;
 
     @Column(nullable = false)
     private LocalDate expireDate;
@@ -58,12 +56,12 @@ public class PasswordResetTokenImpl implements PasswordResetToken {
     }
 
     @Override
-    public User getUser() {
+    public UserImpl getUser() {
         return this.user;
     }
 
     @Override
-    public void setUser(User user) {
+    public void setUser(UserImpl user) {
         this.user = user;
     }
 

@@ -1,5 +1,7 @@
 package ch.zli.m223.ksh20.coworking_project.model;
 
+import ch.zli.m223.ksh20.coworking_project.model.impl.UserImpl;
+
 import java.time.LocalDate;
 
 public interface PasswordResetToken {
@@ -12,9 +14,9 @@ public interface PasswordResetToken {
 
     public void setToken(String token);
 
-    public User getUser();
+    public UserImpl getUser();
 
-    public void setUser(User user);
+    public void setUser(UserImpl user);
 
     public LocalDate getExpireDate();
 
