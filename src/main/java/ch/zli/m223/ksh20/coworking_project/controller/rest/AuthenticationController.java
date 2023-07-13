@@ -61,9 +61,7 @@ public class AuthenticationController {
 
     @GetMapping("/test")
     public ResponseEntity<?> test(@CookieValue("token") String cookieToken) {
-
         Map<String, ?> claims = jwtTokenProvider.getClaimsFromToken(cookieToken);
-
         return ResponseEntity.ok().body(claims);
     }
 }

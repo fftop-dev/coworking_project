@@ -1,5 +1,6 @@
 package ch.zli.m223.ksh20.coworking_project.model.impl;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
@@ -46,6 +47,7 @@ public class UserImpl implements User {
         this.email = email;
         this.passwordHash = password; // Hash
         this.role = role;
+        this.reservations = new ArrayList<>();
     }
 
     @Override
@@ -89,9 +91,15 @@ public class UserImpl implements User {
         this.role = role;
     }
 
+
     @Override
-    public String setPassword() {
-        return null;
+    public String getPasswordHash() {
+        return passwordHash;
+    }
+
+    @Override
+    public void setPassword(String passwordHash) {
+        this.passwordHash = passwordHash;
     }
 
     @Override
@@ -103,4 +111,10 @@ public class UserImpl implements User {
     public List<ReservationImpl> getReservations() {
         return reservations;
     }
+
+    @Override
+    public void setUuid(String uuid) {
+        this.uuid = uuid;
+    }
+
 }
