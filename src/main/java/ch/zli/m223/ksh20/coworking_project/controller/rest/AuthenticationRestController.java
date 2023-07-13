@@ -20,7 +20,7 @@ import jakarta.servlet.http.HttpServletResponse;
 
 @RestController
 @RequestMapping("/api/v1/auth")
-public class AuthenticationController {
+public class AuthenticationRestController {
 
     @Autowired
     private AuthenticationService authenticationService;

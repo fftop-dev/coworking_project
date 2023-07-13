@@ -23,7 +23,7 @@ import ch.zli.m223.ksh20.coworking_project.service.UserService;
 
 @RestController
 @RequestMapping("/api/v1/users")
-public class UserController {
+public class UserRestController {
 
     @Autowired
     private UserService userService;

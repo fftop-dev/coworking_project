@@ -16,7 +16,7 @@ import ch.zli.m223.ksh20.coworking_project.service.ReservationService;
 
 @RestController
 @RequestMapping("/api/v1/reservations")
-public class ReservationController {
+public class ReservationRestController {
 
     @Autowired
     private ReservationService reservationService;

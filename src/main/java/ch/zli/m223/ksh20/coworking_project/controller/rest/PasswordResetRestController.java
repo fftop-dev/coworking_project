@@ -11,7 +11,7 @@ import ch.zli.m223.ksh20.coworking_project.service.impl.PasswordResetServiceImpl
 
 @RestController
 @RequestMapping("/api/v1/password-reset")
-public class PasswordResetController {
+public class PasswordResetRestController {
 
     @Autowired
     private PasswordResetServiceImpl passwordResetService;
