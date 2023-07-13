@@ -25,10 +25,9 @@ public interface User {
 
     void setRole(UserRole role);
 
-    String setPassword();
+    void setPassword(String password);
 
     boolean checkPassword(String passwordHash);
 
     List<ReservationImpl> getReservations();
-
 }

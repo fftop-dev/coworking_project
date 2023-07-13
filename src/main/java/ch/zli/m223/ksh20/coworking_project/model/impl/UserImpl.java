@@ -3,6 +3,8 @@ package ch.zli.m223.ksh20.coworking_project.model.impl;
 import java.util.List;
 import java.util.UUID;
 
+import at.favre.lib.crypto.bcrypt.BCrypt;
+import at.favre.lib.crypto.bcrypt.BCrypt.Result;
 import ch.zli.m223.ksh20.coworking_project.model.User;
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
@@ -44,7 +46,7 @@ public class UserImpl implements User {
         this.firstName = first_name;
         this.lastName = last_name;
         this.email = email;
-        this.passwordHash = password; // Hash
+        this.passwordHash = hashPassword(password);
         this.role = role;
     }
 
@@ -90,13 +92,20 @@ public class UserImpl implements User {
     }
 
     @Override
-    public String setPassword() {
-        return null;
+    public void setPassword(String password) {
+        this.passwordHash = hashPassword(password);
+    }
+
+    private String hashPassword(String password) {
+        String bcryptHashString = BCrypt.withDefaults().hashToString(12, password.toCharArray());
+
+        return bcryptHashString;
     }
 
     @Override
-    public boolean checkPassword(String passwordHash) {
-        return this.passwordHash.equals(passwordHash);
+    public boolean checkPassword(String password) {
+        Result result = BCrypt.verifyer().verify(password.toCharArray(), this.passwordHash);
+        return result.verified;
     }
 
     @Override
