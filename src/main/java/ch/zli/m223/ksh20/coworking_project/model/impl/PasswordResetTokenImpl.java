@@ -25,7 +25,6 @@ public class PasswordResetTokenImpl implements PasswordResetToken {
     @ManyToOne
     @JoinColumn(name = "user_uuid", referencedColumnName = "uuid", nullable = false)
     private UserImpl user;
-    private UserImpl user;
 
     @Column(nullable = false)
     private LocalDate expireDate;
@@ -71,13 +70,8 @@ public class PasswordResetTokenImpl implements PasswordResetToken {
 
     @Override
     public UserImpl getUser() {
-
-    public UserImpl getUser() {
         return this.user;
     }
-
-    @Override
-    public void setUser(UserImpl user) {
 
     public void setUser(UserImpl user) {
         this.user = user;

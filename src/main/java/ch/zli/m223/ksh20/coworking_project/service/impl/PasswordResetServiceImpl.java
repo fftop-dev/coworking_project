@@ -19,18 +19,21 @@ public class PasswordResetServiceImpl implements PasswordResetService {
     @Autowired
     private PasswordResetTokenRepository repository;
 
+    @Autowired
+    private EmailServiceImpl emailService;
+
     @Override
     public void sendPasswordResetEmail(String email) {
         UserImpl user = (UserImpl) userService.getUserByEmail(email);
 
         if (user == null)
-            return; // Do nothing (security reasons)
+            throw new IllegalArgumentException("User does not exist");
 
         PasswordResetTokenImpl token = new PasswordResetTokenImpl(user, LocalDate.now().plusDays(1));
         repository.save(token);
 
-        // TODO: send mail
-        System.out.println("http://localhost:8080/web/password-reset?token=" + token.getToken());
+        emailService.sendEmail(email, "Password reset",
+                "http://localhost:8080/web/password-reset?token=" + token.getToken());
     }
 
     @Override
@@ -43,20 +46,10 @@ public class PasswordResetServiceImpl implements PasswordResetService {
         if (tokenObj.getExpireDate().isBefore(LocalDate.now()))
             throw new IllegalArgumentException("Token expired");
 
-        tokenObj.getUser().setPassword(password);
+        UserImpl user = tokenObj.getUser();
+        userService.updateUser(user);
 
         tokenObj.setExpireDate(LocalDate.now());
+        repository.save(tokenObj);
     }
-
-    @Override
-    public void validatePasswordResetToken(String token) {
-        // TODO: check if token is valid
-    }
-
-    @Override
-    public void invalidatePasswordResetToken(String token) {
-        // TODO: get token from database
-        // TODO: update token expiration date
-    }
-
 }

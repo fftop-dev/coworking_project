@@ -15,4 +15,6 @@ public interface UserService {
     UserNoReservationDto updateUser(String uuid, UserInputDto inputDto);
 
     User getUserByEmail(String email);
+
+    User updateUser(User user);
 }

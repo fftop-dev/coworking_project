@@ -3,11 +3,11 @@ package ch.zli.m223.ksh20.coworking_project.service.impl;
 import java.util.ArrayList;
 import java.util.List;
 
-import ch.zli.m223.ksh20.coworking_project.controller.rest.dto.UserNoReservationDto;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import ch.zli.m223.ksh20.coworking_project.controller.rest.dto.UserInputDto;
+import ch.zli.m223.ksh20.coworking_project.controller.rest.dto.UserNoReservationDto;
 import ch.zli.m223.ksh20.coworking_project.model.User;
 import ch.zli.m223.ksh20.coworking_project.model.impl.UserImpl;
 import ch.zli.m223.ksh20.coworking_project.model.impl.UserRole;
@@ -45,28 +45,34 @@ public class UserServiceImpl implements UserService {
 
         User user = userRepository.findByUuid(uuid);
 
-        if (!inputDto.firstName.isBlank()){
+        if (!inputDto.firstName.isBlank()) {
             user.setFirstName(inputDto.firstName);
         }
-        if (!inputDto.lastName.isBlank()){
+        if (!inputDto.lastName.isBlank()) {
             user.setLastName(inputDto.lastName);
         }
-        if (!inputDto.email.isBlank()){
+        if (!inputDto.email.isBlank()) {
             user.setEmail(inputDto.email);
         }
-        if (!inputDto.password.isBlank()){
+        if (!inputDto.password.isBlank()) {
             user.setPassword(inputDto.password);
         }
 
-        userRepository.updateUserByUuid(uuid, user.getFirstName(), user.getLastName(), user.getEmail(), user.getPasswordHash());
+        userRepository.updateUserByUuid(uuid, user.getFirstName(), user.getLastName(), user.getEmail(),
+                user.getPasswordHash());
         return new UserNoReservationDto(user);
 
-
     }
-
 
     @Override
     public User getUserByEmail(String email) {
         return userRepository.findByEmail(email);
+    }
+
+    @Override
+    public User updateUser(User user) {
+        UserImpl userImpl = (UserImpl) user;
+
+        return userRepository.save(userImpl);
     }
 }

@@ -18,10 +18,13 @@ public class PasswordResetController {
 
     @PostMapping("/send-email")
     public ResponseEntity<?> sendPasswordResetEmail(@RequestParam String email) {
-        passwordResetService.sendPasswordResetEmail(email);
+        try {
+            passwordResetService.sendPasswordResetEmail(email);
+        } catch (Exception e) {
+            return ResponseEntity.badRequest().body(e.getMessage());
+        }
 
-        // TODO: handle email sending errors
-        return ResponseEntity.ok().body("Password reset email sent if user exists");
+        return ResponseEntity.ok().body("Password reset mail sent");
     }
 
     @PostMapping()
