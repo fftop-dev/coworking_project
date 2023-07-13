@@ -1,10 +1,13 @@
 package ch.zli.m223.ksh20.coworking_project.service;
 
-import ch.zli.m223.ksh20.coworking_project.model.User;
-
 import java.util.List;
+
+import ch.zli.m223.ksh20.coworking_project.controller.rest.dto.UserInputDto;
+import ch.zli.m223.ksh20.coworking_project.model.User;
 
 public interface UserService {
 
     List<User> getUserList();
+
+    User createUser(UserInputDto inputDto);
 }

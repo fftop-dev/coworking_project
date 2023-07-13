@@ -15,4 +15,8 @@ public interface UserRepository extends JpaRepository<UserImpl, Long> {
     public default void addUser(UserImpl joeMama) {
         save(joeMama);
     }
+
+    public default User findByEmail(String email) {
+        return findAll().stream().filter(u -> u.getEmail().equals(email)).findFirst().orElse(null);
+    }
 }
