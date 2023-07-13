@@ -32,14 +32,8 @@ public class JwtTokenProvider {
                 .compact();
     }
 
-    public boolean validateToken(String authToken) {
-        try {
-            Jwts.parser().setSigningKey(jwtSecret).parseClaimsJws(authToken);
-            return true;
-
-        } catch (Exception e) {
-            return false;
-        }
+    public void validateToken(String authToken) {
+        Jwts.parser().setSigningKey(jwtSecret).parseClaimsJws(authToken);
     }
 
     public Map<String, ?> getClaimsFromToken(String token) {
