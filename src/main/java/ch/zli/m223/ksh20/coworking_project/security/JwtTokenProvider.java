@@ -3,6 +3,7 @@ package ch.zli.m223.ksh20.coworking_project.security;
 import java.security.SecureRandom;
 import java.util.Base64;
 import java.util.Date;
+import java.util.Map;
 
 import org.springframework.stereotype.Component;
 
@@ -13,11 +14,9 @@ import io.jsonwebtoken.SignatureAlgorithm;
 @Component
 public class JwtTokenProvider {
 
-    // @Value("${jwt.secret}")
     private String jwtSecret;
 
-    // @Value("${jwt.expiration}")
-    private int jwtExpirationInMs = 30000;
+    private int jwtExpirationInMs = 60000;
 
     public String generateToken(User user) {
 
@@ -31,6 +30,20 @@ public class JwtTokenProvider {
                 .setExpiration(expiryDate)
                 .signWith(SignatureAlgorithm.HS512, jwtSecret)
                 .compact();
+    }
+
+    public boolean validateToken(String authToken) {
+        try {
+            Jwts.parser().setSigningKey(jwtSecret).parseClaimsJws(authToken);
+            return true;
+
+        } catch (Exception e) {
+            return false;
+        }
+    }
+
+    public Map<String, ?> getClaimsFromToken(String token) {
+        return Jwts.parser().setSigningKey(jwtSecret).parseClaimsJws(token).getBody();
     }
 
     // genereate secret key
