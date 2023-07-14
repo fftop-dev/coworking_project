@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html
+	xmlns:th="http://www.thymeleaf.org"
+	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	layout:decorate="layout.html"
+>
+	<head>
+		<meta charset="UTF-8" />
+		<title>Login</title>
+	</head>
+	<body>
+		<div layout:fragment="header.inner">
+			<h1>Admin Panel</h1>
+			<h2 layout:fragment="panel.heading"></h2>
+		</div>
+		<div layout:fragment="content"></div>
+	</body>
+</html>

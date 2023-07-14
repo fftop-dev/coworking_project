@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="/admin/adminLayout.html">
+
+<head>
+  <meta charset="UTF-8" />
+  <title>Edit Reservation</title>
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" />
+</head>
+
+<body>
+<div layout:fragment="panel.heading">
+  <h2>Edit Reservation</h2>
+</div>
+
+<div layout:fragment="content">
+  <form th:action="@{/saveReservation}" method="post">
+    <input type="hidden" th:field="${id}" />
+    <div class="form-group">
+      <label>ID:</label>
+      <span th:text="${reservation.uuid}"></span>
+    </div>
+    <div class="form-group">
+      <label>User:</label>
+      <span th:text="${reservation.user.firstName} + ' ' + ${reservation.user.lastName}"></span>
+    </div>
+    <div class="form-group">
+      <label>Date:</label>
+      <input type="text" class="form-control" th:field="${date}" />
+    </div>
+    <div class="form-group">
+      <label>Type:</label>
+      <input type="text" class="form-control" th:field="${type}" />
+    </div>
+    <div class="form-group">
+      <label>Status:</label>
+      <input type="text" class="form-control" th:field="${status}" />
+    </div>
+    <button type="submit" class="btn btn-primary">Save</button>
+    <a class="btn btn-secondary" th:href="@{/reservation}">Cancel</a>
+  </form>
+</div>
+
+</body>
+
+</html>
