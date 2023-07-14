@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 public class AuthenticationWebController {
 
     @GetMapping("/login")
-    public String login() {
+    public String showLoginForm() {
         return "login";
     }
 
@@ -32,7 +32,7 @@ public class AuthenticationWebController {
     }
 
     @GetMapping("/register")
-    public String register() {
+    public String showRegisterForm() {
         return "register";
     }
 
@@ -42,7 +42,6 @@ public class AuthenticationWebController {
                                       @RequestParam("email") String email,
                                       @RequestParam("password") String password,
                                       Model model) {
-
         // Hier können Sie Ihre Registrierungs-Logik implementieren
         // Verarbeiten Sie die übermittelten Registrierungsdaten und speichern Sie sie in Ihrer Datenbank oder an anderer Stelle
 
@@ -62,11 +61,13 @@ public class AuthenticationWebController {
 
     // Beispiel-Methode zum Überprüfen der Benutzeranmeldeinformationen
     private boolean isValidUser(String email, String password) {
-        // Fügen Sie hier Ihre Überprüfungslogik ein
-        // Zum Beispiel: Überprüfen Sie E-Mail und Passwort gegen Datenbank oder andere Authentifizierungsmechanismen
-        // Rückgabe true, wenn die Anmeldeinformationen gültig sind, andernfalls false
 
-        return false;
+        if (email.equals("jenith.jeyaranjan@gmail.com") && password.equals("password")) {
+            return true; // Anmeldeinformationen sind gültig
+        } else {
+            return false; // Anmeldeinformationen sind ungültig
+        }
+
     }
 
 }
