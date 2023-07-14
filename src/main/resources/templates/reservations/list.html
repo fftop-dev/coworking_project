@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html
+	xmlns:th="http://www.thymeleaf.org"
+	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	layout:decorate="/admin/adminLayout.html"
+>
+	<head>
+		<meta charset="UTF-8" />
+		<title>Login</title>
+		<link
+			rel="stylesheet"
+			href="https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
+		/>
+	</head>
+
+	<body>
+		<div layout:fragment="panel.heading">
+			<h2>Users</h2>
+		</div>
+
+		<div layout:fragment="content">
+			<table class="table">
+				<thead>
+					<tr>
+						<th>UUID</th>
+						<th>User Email</th>
+						<th>Date</th>
+						<th>Type</th>
+						<th>Status</th>
+					</tr>
+				</thead>
+				<tbody>
+					<tr th:each="reservation : ${reservations}">
+						<td>
+							<span th:text="${reservation.uuid}"></span>
+						</td>
+						<td>
+							<span th:text="${reservation.user.email}"></span>
+						</td>
+						<td>
+							<span th:text="${reservation.date}"></span>
+						</td>
+						<td>
+							<span th:text="${reservation.type}"></span>
+						</td>
+						<td>
+							<form
+								method="POST"
+								th:action="@{/reservations/accept(uuid=${reservation.uuid})}"
+							>
+								<button
+									class="btn btn-primary update-btn"
+									type="submit"
+									name="submit"
+									value="value"
+								>
+									ACCEPT
+								</button>
+							</form>
+						</td>
+						<td>
+							<span th:text="${reservation.status}"></span>
+						</td>
+						<td>
+							<form
+								method="POST"
+								th:action="@{/reservations/reject(uuid=${reservation.uuid})}"
+							>
+								<button
+									class="btn btn-primary update-btn"
+									type="submit"
+									name="submit"
+									value="value"
+								>
+									REJECT
+								</button>
+							</form>
+						</td>
+					</tr>
+				</tbody>
+			</table>
+		</div>
+	</body>
+</html>

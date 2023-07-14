@@ -6,16 +6,16 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
-
-import ch.zli.m223.ksh20.coworking_project.model.Reservation;
 import ch.zli.m223.ksh20.coworking_project.model.impl.ReservationImpl;
 import ch.zli.m223.ksh20.coworking_project.model.impl.ReservationStatus;
 import ch.zli.m223.ksh20.coworking_project.model.impl.ReservationType;
 import ch.zli.m223.ksh20.coworking_project.model.impl.UserImpl;
 import ch.zli.m223.ksh20.coworking_project.repository.ReservationRepository;
 import ch.zli.m223.ksh20.coworking_project.repository.UserRepository;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
+import ch.zli.m223.ksh20.coworking_project.model.Reservation;
 import ch.zli.m223.ksh20.coworking_project.service.ReservationService;
 
 @Service
@@ -39,12 +39,14 @@ public class ReservationServiceImpl implements ReservationService {
     @Override
     public boolean setReservationStatus(String uuid, String status) {
         Reservation reservation = reservationRepository.findByUuid(uuid);
-        if (reservation != null) {
-            if (status.equals("APPROVED")) {
+        if (reservation != null){
+            if (status.equals("APPROVED")){
                 reservation.setStatus(ReservationStatus.APPROVED);
-            } else if (status.equals("REJECTED")) {
+            }
+            else if (status.equals("REJECTED")){
                 reservation.setStatus(ReservationStatus.REJECTED);
-            } else {
+            }
+            else{
                 return false;
             }
             return reservationRepository.updateReservationStatus(uuid, reservation.getStatus()) == 1;
@@ -55,16 +57,21 @@ public class ReservationServiceImpl implements ReservationService {
     @Override
     public boolean checkReservationUuid(String reservationUuid, String userUuid) {
         Reservation reservation = reservationRepository.findByUuid(reservationUuid);
-        if (reservation.getUser().getUuid().equals(userUuid)) {
-            return true;
+        if (reservation != null){
+            if (reservation.getUser().getUuid().equals(userUuid)){
+                return true;
+            }
         }
         return false;
     }
 
     @Override
     public boolean deleteReservation(String uuid) {
-        reservationRepository.delete((ReservationImpl) reservationRepository.findByUuid(uuid));
-        return true;
+        if ((ReservationImpl) reservationRepository.findByUuid(uuid) != null){
+            reservationRepository.delete((ReservationImpl) reservationRepository.findByUuid(uuid));
+            return true;
+        }
+        return false;
     }
 
     @Override
@@ -72,17 +79,20 @@ public class ReservationServiceImpl implements ReservationService {
         UserImpl user = (UserImpl) userRepository.findByUuid(user_uuid);
         LocalDate dateParsed = LocalDate.parse(date);
         ReservationType typeParsed = null;
-        if (type.equals("AFTERNOON")) {
+        if (type.equals("AFTERNOON")){
             typeParsed = ReservationType.AFTERNOON;
-        } else if (type.equals("MORNING")) {
+        }
+        else if (type.equals("MORNING")){
             typeParsed = ReservationType.MORNING;
-        } else if (type.equals("FULL_DAY")) {
+        }
+        else if (type.equals("FULL_DAY")){
             typeParsed = ReservationType.FULL_DAY;
-        } else {
+        }
+        else{
             return false;
         }
 
-        if (user == null) {
+        if (user == null){
             return false;
         }
 

@@ -52,8 +52,8 @@
 					<p th:text="${error}"></p>
 				</div>
 
-				<p th:text="${email}"></p>
-				<p th:text="${password}"></p>
+				<!-- <p th:text="${email}"></p> -->
+				<!-- <p th:text="${password}"></p> -->
 				<form
 					action="#"
 					th:action="@{/login}"
@@ -67,7 +67,7 @@
 							class="form-control"
 							id="email"
 							name="email"
-							th:field="*{email}"
+							th:field="*{loginForm.email}"
 							required
 						/>
 					</div>
@@ -78,7 +78,7 @@
 							class="form-control"
 							id="password"
 							name="password"
-							th:field="*{password}"
+							th:field="*{loginForm.password}"
 							required
 						/>
 					</div>

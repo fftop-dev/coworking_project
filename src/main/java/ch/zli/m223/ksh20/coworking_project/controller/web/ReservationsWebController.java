@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.client.HttpClientErrorException;
 import org.springframework.web.client.RestTemplate;
 
-import ch.zli.m223.ksh20.coworking_project.controller.web.model.Reservation;
+import ch.zli.m223.ksh20.coworking_project.controller.web.dto.Reservation;
 import ch.zli.m223.ksh20.coworking_project.security.JwtToken;
 
 @Controller
