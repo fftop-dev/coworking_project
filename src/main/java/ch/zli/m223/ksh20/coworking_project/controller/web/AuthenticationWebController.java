@@ -56,11 +56,12 @@ public class AuthenticationWebController {
     private boolean isValidUser(String email, String password) {
 
         if (email.equals("jenith.jeyaranjan@gmail.com") && password.equals("password")) {
-            return true; // Anmeldeinformationen sind gültig
+            return true;
         } else {
-            return false; // Anmeldeinformationen sind ungültig
+            return false;
         }
 
     }
+
 
 }
