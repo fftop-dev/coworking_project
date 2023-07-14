@@ -16,7 +16,7 @@ public class JwtTokenProvider {
 
     private String jwtSecret;
 
-    private int jwtExpirationInMs = 60000;
+    private int jwtExpirationInMs = 1000 * 60 * 60 * 24;
 
     public String generateToken(User user) {
 
