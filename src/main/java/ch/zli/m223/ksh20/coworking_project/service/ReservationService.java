@@ -6,6 +6,7 @@ import ch.zli.m223.ksh20.coworking_project.model.Reservation;
 
 public interface ReservationService {
     List<Reservation> getReservationList();
+
     List<Reservation> getReservationList(String uuid);
 
     boolean setReservationStatus(String uuid, String status);
@@ -15,4 +16,7 @@ public interface ReservationService {
     boolean deleteReservation(String uuid);
 
     boolean addReservation(String user_uuid, String date, String type);
+
+    Object getReservationStats();
+
 }

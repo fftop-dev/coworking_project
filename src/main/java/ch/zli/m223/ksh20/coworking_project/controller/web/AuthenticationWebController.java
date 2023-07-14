@@ -1,11 +1,12 @@
 package ch.zli.m223.ksh20.coworking_project.controller.web;
 
-import org.json.JSONObject;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.util.LinkedMultiValueMap;
+import org.springframework.util.MultiValueMap;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -66,7 +67,6 @@ public class AuthenticationWebController extends WebController {
         return "index";
     }
 
-    @JwtToken
     private boolean isValidUser(LoginForm loginData) {
         String apiUrl = urlRoot + "/auth/login";
 
@@ -75,18 +75,17 @@ public class AuthenticationWebController extends WebController {
 
         // Create HTTP headers with JSON content type
         HttpHeaders headers = new HttpHeaders();
-        headers.setContentType(MediaType.APPLICATION_JSON);
+        headers.setContentType(MediaType.APPLICATION_FORM_URLENCODED);
 
         // add data
-        var dataJson = new JSONObject();
-        dataJson.put("email", loginData.getEmail());
-        dataJson.put("password", loginData.getPassword());
-
-        HttpEntity<JSONObject> request = new HttpEntity<JSONObject>(dataJson, headers);
+        var data = new LinkedMultiValueMap<String, String>();
+        data.add("password", loginData.getPassword());
+        data.add("email", loginData.getEmail());
+        HttpEntity<MultiValueMap<String, String>> request = new HttpEntity<>(data, headers);
 
         // Send the POST request to the REST endpoint
         try {
-            restTemplate.postForObject(apiUrl, request, Void.class);
+            restTemplate.postForEntity(apiUrl, request, String.class);
         } catch (Exception e) {
             return false;
         }

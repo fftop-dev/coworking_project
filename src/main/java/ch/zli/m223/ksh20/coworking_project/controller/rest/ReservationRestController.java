@@ -1,22 +1,23 @@
 package ch.zli.m223.ksh20.coworking_project.controller.rest;
 
-import java.time.LocalDate;
 import java.util.List;
 import java.util.stream.Collectors;
 
-import ch.zli.m223.ksh20.coworking_project.controller.rest.dto.UserDto;
-import ch.zli.m223.ksh20.coworking_project.controller.rest.dto.UserInputDto;
-import ch.zli.m223.ksh20.coworking_project.model.Reservation;
-import ch.zli.m223.ksh20.coworking_project.model.User;
-import ch.zli.m223.ksh20.coworking_project.model.impl.ReservationImpl;
-import ch.zli.m223.ksh20.coworking_project.security.JwtTokenProvider;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.CookieValue;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
 
 import ch.zli.m223.ksh20.coworking_project.controller.rest.dto.ReservationDto;
 import ch.zli.m223.ksh20.coworking_project.controller.rest.dto.ReservationNoUserDto;
 import ch.zli.m223.ksh20.coworking_project.security.Authorized;
+import ch.zli.m223.ksh20.coworking_project.security.JwtTokenProvider;
 import ch.zli.m223.ksh20.coworking_project.service.ReservationService;
 
 @RestController
@@ -32,18 +33,19 @@ public class ReservationRestController {
     @Authorized(allowedRoles = { "MEMBER", "ADMIN" })
     @GetMapping()
     List<ReservationNoUserDto> getReservationList(@CookieValue("token") String cookieToken) {
-        return reservationService.getReservationList((String)jwtTokenProvider.getClaimsFromToken(cookieToken).get("sub")).stream()
+        return reservationService
+                .getReservationList((String) jwtTokenProvider.getClaimsFromToken(cookieToken).get("sub")).stream()
                 .map(ReservationNoUserDto::new)
                 .collect(Collectors.toList());
     }
 
-    @Authorized(allowedRoles = {"ADMIN"})
+    @Authorized(allowedRoles = { "ADMIN" })
     @PostMapping("/update-status/{uuid}")
-    ResponseEntity<?> setReservationStatus(@CookieValue("token") String cookieToken, @PathVariable String uuid, @RequestParam String status) {
-        if(reservationService.setReservationStatus(uuid, status)){
+    ResponseEntity<?> setReservationStatus(@CookieValue("token") String cookieToken, @PathVariable String uuid,
+            @RequestParam String status) {
+        if (reservationService.setReservationStatus(uuid, status)) {
             return ResponseEntity.ok().body("status changed");
-        }
-        else{
+        } else {
             return ResponseEntity.badRequest().body("there was an error");
         }
     }
@@ -58,24 +60,33 @@ public class ReservationRestController {
         return ResponseEntity.ok(reservations);
     }
 
-    @Authorized(allowedRoles = {"MEMBER", "ADMIN"})
+    @Authorized(allowedRoles = { "MEMBER", "ADMIN" })
     @DeleteMapping("/delete/{uuid}")
-    ResponseEntity<?> deleteUserByUuid(@CookieValue("token") String cookieToken, @PathVariable String uuid){
-        if (reservationService.checkReservationUuid(uuid, (String) jwtTokenProvider.getClaimsFromToken(cookieToken).get("sub"))){
-            if(reservationService.deleteReservation(uuid)){
+    ResponseEntity<?> deleteUserByUuid(@CookieValue("token") String cookieToken, @PathVariable String uuid) {
+        if (reservationService.checkReservationUuid(uuid,
+                (String) jwtTokenProvider.getClaimsFromToken(cookieToken).get("sub"))) {
+            if (reservationService.deleteReservation(uuid)) {
                 return ResponseEntity.ok().body("Reservation [" + uuid + "] has been deleted successfully");
             }
         }
         return ResponseEntity.ok().body("There was an error");
     }
 
-    @Authorized(allowedRoles = {"MEMBER", "ADMIN"})
+    @Authorized(allowedRoles = { "MEMBER", "ADMIN" })
     @PostMapping("/add")
-    ResponseEntity<?> addReservation(@CookieValue("token") String cookieToken, @RequestParam String date, @RequestParam String type) {
-        if (reservationService.addReservation((String)jwtTokenProvider.getClaimsFromToken(cookieToken).get("sub"), date, type)){
+    ResponseEntity<?> addReservation(@CookieValue("token") String cookieToken, @RequestParam String date,
+            @RequestParam String type) {
+        if (reservationService.addReservation((String) jwtTokenProvider.getClaimsFromToken(cookieToken).get("sub"),
+                date, type)) {
             return ResponseEntity.ok().body("Reservation has been added successfully");
         }
         return ResponseEntity.ok().body("There was an error");
+    }
+
+    @Authorized(allowedRoles = { "ADMIN" })
+    @GetMapping("/stats")
+    ResponseEntity<?> getReservationStats() {
+        return ResponseEntity.ok().body(reservationService.getReservationStats());
     }
 
 }
