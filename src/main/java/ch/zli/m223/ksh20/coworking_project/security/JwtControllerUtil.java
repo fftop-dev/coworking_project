@@ -26,8 +26,24 @@ public class JwtControllerUtil {
         return null;
     }
 
+    public Map<String, ?> getClaimsFromRequest(HttpServletRequest request) {
+        String tokenCookie = getAuthTokenFromRequest(request);
+        if (tokenCookie == null)
+            return null;
+        return getClaimsFromToken(tokenCookie);
+    }
+
+    public Map<String, ?> getClaimsFromToken(String tokenCookie) {
+        return jwtTokenProvider.getClaimsFromToken(tokenCookie);
+    }
+
     public String getRoleFromToken(String tokenCookie) {
-        Map<String, ?> claims = jwtTokenProvider.getClaimsFromToken(tokenCookie);
+        Map<String, ?> claims = getClaimsFromToken(tokenCookie);
         return (String) claims.get("role");
+    }
+
+    public String getUuidFromToken(String tokenCookie) {
+        Map<String, ?> claims = getClaimsFromToken(tokenCookie);
+        return (String) claims.get("sub");
     }
 }

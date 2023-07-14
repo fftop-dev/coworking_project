@@ -3,12 +3,14 @@ package ch.zli.m223.ksh20.coworking_project.service.impl;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 import ch.zli.m223.ksh20.coworking_project.model.User;
 import ch.zli.m223.ksh20.coworking_project.model.impl.ReservationImpl;
 import ch.zli.m223.ksh20.coworking_project.model.impl.ReservationStatus;
 import ch.zli.m223.ksh20.coworking_project.model.impl.ReservationType;
 import ch.zli.m223.ksh20.coworking_project.model.impl.UserImpl;
+import ch.zli.m223.ksh20.coworking_project.repository.ReservationRepository;
 import ch.zli.m223.ksh20.coworking_project.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -97,5 +99,28 @@ public class ReservationServiceImpl implements ReservationService {
 
         ReservationImpl reservation = new ReservationImpl(user, dateParsed, typeParsed);
         return reservationRepository.addReservation(reservation) != null;
+    }
+
+    @Override
+    public Object getReservationStats() {
+        Map<String, Integer> stats = new HashMap<>();
+
+        var reservations = reservationRepository.findAll();
+        stats.put("total reservations", reservations.size());
+        stats.put("total approved",
+                (int) reservations.stream().filter(r -> r.getStatus() == ReservationStatus.APPROVED).count());
+        stats.put("total rejected",
+                (int) reservations.stream().filter(r -> r.getStatus() == ReservationStatus.REJECTED).count());
+        stats.put("total pending",
+                (int) reservations.stream().filter(r -> r.getStatus() == ReservationStatus.PENDING).count());
+
+        stats.put("total last week",
+                (int) reservations.stream().filter(r -> r.getDate().isAfter(LocalDate.now().minusDays(7))).count());
+        stats.put("total last month",
+                (int) reservations.stream().filter(r -> r.getDate().isAfter(LocalDate.now().minusDays(30))).count());
+        stats.put("total last year",
+                (int) reservations.stream().filter(r -> r.getDate().isAfter(LocalDate.now().minusDays(365))).count());
+
+        return stats;
     }
 }

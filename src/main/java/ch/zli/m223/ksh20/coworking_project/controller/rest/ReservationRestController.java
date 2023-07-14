@@ -41,10 +41,10 @@ public class ReservationRestController {
     @PostMapping("/update-status/{uuid}")
     ResponseEntity<?> setReservationStatus(@CookieValue("token") String cookieToken, @PathVariable String uuid, @RequestParam String status) {
         if(reservationService.setReservationStatus(uuid, status)){
-            return ResponseEntity.ok().body("success");
+            return ResponseEntity.ok().body("status changed");
         }
         else{
-            return ResponseEntity.badRequest().body("There was an error");
+            return ResponseEntity.badRequest().body("there was an error");
         }
     }
 
@@ -58,7 +58,7 @@ public class ReservationRestController {
         return ResponseEntity.ok(reservations);
     }
 
-    @Authorized(allowedRoles = {"MEMBER", "ADMIN"})
+    @Authorized(allowedRoles = { "MEMBER", "ADMIN" })
     @DeleteMapping("/delete/{uuid}")
     ResponseEntity<?> deleteUserByUuid(@CookieValue("token") String cookieToken, @PathVariable String uuid){
         if (reservationService.checkReservationUuid(uuid, (String) jwtTokenProvider.getClaimsFromToken(cookieToken).get("sub"))){
@@ -76,6 +76,12 @@ public class ReservationRestController {
             return ResponseEntity.ok().body("success");
         }
         return ResponseEntity.badRequest().body("There was an error");
+    }
+
+    @Authorized(allowedRoles = { "ADMIN" })
+    @GetMapping("/stats")
+    ResponseEntity<?> getReservationStats() {
+        return ResponseEntity.ok().body(reservationService.getReservationStats());
     }
 
 }
