@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html
+	xmlns:th="http://www.thymeleaf.org"
+	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	layout:decorate="/admin/adminLayout.html"
+>
+	<head>
+		<meta charset="UTF-8" />
+		<title>Login</title>
+	</head>
+	<body>
+		<div layout:fragment="panel.heading">
+			<h2>Users</h2>
+		</div>
+		<div layout:fragment="content">
+			<div th:each="user : ${users}">
+				<span th:text="${user.firstName}"></span>
+				<span th:text="${user.lastName}"></span>
+				<span th:text="${user.email}"></span>
+				<span th:text="${user.role}"></span>
+			</div>
+		</div>
+	</body>
+</html>
