@@ -1,27 +1,38 @@
 <!DOCTYPE html>
-<html
-	xmlns:th="http://www.thymeleaf.org"
-	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
->
-	<head>
-		<meta charset="UTF-8" />
-		<title>Layout</title>
-		<link rel="stylesheet" href="style.css" />
-	</head>
-	<body>
-		<header layout:fragment="header">
-			<nav>
-				<ul>
-					<li><a href="/">Home</a></li>
-					<li><a href="/login">Login</a></li>
-					<li><a href="/register">Signup</a></li>
-				</ul>
-			</nav>
-			<header layout:fragment="header.inner"></header>
-		</header>
+<html xmlns:th="http://www.thymeleaf.org"
+	  xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
 
-		<div layout:fragment="content"></div>
+<head>
+	<meta charset="UTF-8" />
+	<title>Layout</title>
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" />
+	<link rel="stylesheet" href="style.css" />
+</head>
 
-		<footer layout:fragment="footer">[FOOTER]</footer>
-	</body>
+<body>
+<header layout:fragment="header">
+	<nav class="navbar navbar-expand-lg navbar-light bg-light">
+		<a class="navbar-brand" href="/">Home</a>
+		<button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav"
+				aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+			<span class="navbar-toggler-icon"></span>
+		</button>
+		<div class="collapse navbar-collapse" id="navbarNav">
+			<ul class="navbar-nav">
+				<li class="nav-item">
+					<a class="nav-link" href="/login">Login</a>
+				</li>
+				<li class="nav-item">
+					<a class="nav-link" href="/register">Signup</a>
+				</li>
+			</ul>
+		</div>
+	</nav>
+</header>
+
+<div layout:fragment="content"></div>
+
+<footer layout:fragment="footer">[FOOTER]</footer>
+</body>
+
 </html>
