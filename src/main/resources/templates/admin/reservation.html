@@ -5,50 +5,41 @@
 
 <head>
   <meta charset="UTF-8" />
-  <title>Login</title>
+  <title>Edit Reservation</title>
   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" />
 </head>
 
 <body>
 <div layout:fragment="panel.heading">
-  <h2>Reservation</h2>
+  <h2>Edit Reservation</h2>
 </div>
 
 <div layout:fragment="content">
-  <table class="table">
-    <thead>
-    <tr>
-      <th>ID</th>
-      <th>User</th>
-      <th>Date</th>
-      <th>Type</th>
-      <th>Status</th>
-      <th>Actions</th>
-    </tr>
-    </thead>
-    <tbody>
-    <tr th:each="reservation : ${reservations}">
-      <td>
-        <span class="field-value" th:text="${reservation.uuid}"></span>
-      </td>
-      <td>
-        <span class="field-value" th:text="${reservation.user.firstName} + ' ' + ${reservation.user.lastName}"></span>
-      </td>
-      <td>
-        <span class="field-value" th:text="${reservation.date}"></span>
-      </td>
-      <td>
-        <span class="field-value" th:text="${reservation.type}"></span>
-      </td>
-      <td>
-        <span class="field-value" th:text="${reservation.status}"></span>
-      </td>
-      <td>
-        <button class="btn btn-primary edit-btn">Edit</button>
-      </td>
-    </tr>
-    </tbody>
-  </table>
+  <form th:action="@{/saveReservation}" method="post">
+    <input type="hidden" th:field="${id}" />
+    <div class="form-group">
+      <label>ID:</label>
+      <span th:text="${reservation.uuid}"></span>
+    </div>
+    <div class="form-group">
+      <label>User:</label>
+      <span th:text="${reservation.user.firstName} + ' ' + ${reservation.user.lastName}"></span>
+    </div>
+    <div class="form-group">
+      <label>Date:</label>
+      <input type="text" class="form-control" th:field="${date}" />
+    </div>
+    <div class="form-group">
+      <label>Type:</label>
+      <input type="text" class="form-control" th:field="${type}" />
+    </div>
+    <div class="form-group">
+      <label>Status:</label>
+      <input type="text" class="form-control" th:field="${status}" />
+    </div>
+    <button type="submit" class="btn btn-primary">Save</button>
+    <a class="btn btn-secondary" th:href="@{/reservation}">Cancel</a>
+  </form>
 </div>
 
 </body>
