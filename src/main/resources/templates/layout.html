@@ -40,10 +40,23 @@
 					</ul>
 				</div>
 			</nav>
+			<div layout:fragment="header.inner"></div>
 		</header>
 
 		<div layout:fragment="content"></div>
+		<footer
+			class="text-center text-white fixed-bottom"
+			style="background-color: #21081a"
+		>
+			<div class="container p-4"></div>
 
-		<footer layout:fragment="footer">[FOOTER]</footer>
+			<div
+				class="text-center p-3"
+				style="background-color: rgba(0, 0, 0, 0.2)"
+			>
+				© 2023 Copyright:
+				<a class="text-white" href="#">KSH20</a>
+			</div>
+		</footer>
 	</body>
 </html>

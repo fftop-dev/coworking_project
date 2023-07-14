@@ -1,5 +1,8 @@
 package ch.zli.m223.ksh20.coworking_project.controller.web;
 
+import org.springframework.http.HttpEntity;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.MediaType;
 import org.springframework.web.client.HttpClientErrorException;
 import org.springframework.web.client.RestTemplate;
 
@@ -26,5 +29,14 @@ public class WebController {
         if (e.getStatusCode().value() == 401)
             return "error/401";
         return "error/500";
+    }
+
+    protected <T> T sendPostRequest(String url, Object data, Class<T> clazz) throws HttpClientErrorException {
+        HttpHeaders headers = new HttpHeaders();
+        headers.setContentType(MediaType.APPLICATION_JSON);
+
+        HttpEntity<Object> request = new HttpEntity<>(data, headers);
+
+        return postObject(urlRoot + url, request, clazz);
     }
 }
