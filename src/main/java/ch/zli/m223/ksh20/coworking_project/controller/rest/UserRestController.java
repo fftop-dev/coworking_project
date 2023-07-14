@@ -39,14 +39,20 @@ public class UserRestController {
     @GetMapping("/show/{uuid}")
     ResponseEntity<?> getUserByUuid(@CookieValue("token") String cookieToken, @PathVariable String uuid){
         UserDto user =  userService.getUserByUuid(uuid);
-        return ResponseEntity.ok().body(user);
+        if (user != null){
+            return ResponseEntity.ok().body(user);
+        }
+        return ResponseEntity.badRequest().body("There was an error");
     }
 
     @Authorized(allowedRoles = {"MEMBER", "ADMIN"})
     @GetMapping("/show")
     ResponseEntity<?> getLoggedInUser(@CookieValue("token") String cookieToken){
         UserDto user =  userService.getUserByUuid((String) jwtTokenProvider.getClaimsFromToken(cookieToken).get("sub"));
-        return ResponseEntity.ok().body(user);
+        if (user != null){
+            return ResponseEntity.ok().body(user);
+        }
+        return ResponseEntity.badRequest().body("There was an error");
     }
 
 
@@ -55,37 +61,33 @@ public class UserRestController {
     ResponseEntity<?> deleteUserByUuid(@CookieValue("token") String cookieToken, @PathVariable String uuid){
         if (!jwtTokenProvider.getClaimsFromToken(cookieToken).get("sub").equals(uuid)){
             if (userService.deleteUserByUuid(uuid)){
-                return ResponseEntity.ok().body("User [" + uuid + "] has been deleted successfully");
+                return ResponseEntity.ok().body("success");
             }
         }
-        return ResponseEntity.ok().body("There was an error");
+        return ResponseEntity.badRequest().body("There was an error");
     }
 
 
     @PostMapping("/register")
-    UserDto createUser(@RequestParam String firstName, @RequestParam String lastName, @RequestParam String email,
+    ResponseEntity<?>  createUser(@RequestParam String firstName, @RequestParam String lastName, @RequestParam String email,
             @RequestParam String password) {
         User user = userService.createUser(new UserInputDto(firstName, lastName, email, password));
-        return new UserDto(user);
+        if (user != null){
+            return ResponseEntity.ok().body("success");
+        }
+        return ResponseEntity.badRequest().body("There was an error");
     }
 
+    @Authorized(allowedRoles = {"MEMBER", "ADMIN"})
     @PutMapping("/update")
     ResponseEntity<?> updateUser(@CookieValue("token") String cookieToken, @RequestParam String firstName,
             @RequestParam String lastName, @RequestParam String email, @RequestParam String password) {
 
-        Map<String, ?> claims = jwtTokenProvider.getClaimsFromToken(cookieToken);
-
-        UserNoReservationDto updatedUser;
-
-        if (claims.get("role").equals("MEMBER") || claims.get("role").equals("ADMIN")) {
-            String uuid = (String) claims.get("sub");
-            updatedUser = userService.updateUser(uuid, new UserInputDto(firstName, lastName, email, password));
-        } else {
-            return ResponseEntity.badRequest().body("Unauthorized");
+        String uuid = (String) jwtTokenProvider.getClaimsFromToken(cookieToken).get("sub");
+        UserNoReservationDto updatedUser = userService.updateUser(uuid, new UserInputDto(firstName, lastName, email, password));
+        if (updatedUser != null){
+            return ResponseEntity.ok().body("success");
         }
-
-        return ResponseEntity.ok().body(updatedUser);
+        return ResponseEntity.badRequest().body("There was an error");
     }
-
-
 }

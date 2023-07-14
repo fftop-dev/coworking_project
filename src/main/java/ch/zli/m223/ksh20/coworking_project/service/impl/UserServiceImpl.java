@@ -30,7 +30,7 @@ public class UserServiceImpl implements UserService {
     public User createUser(UserInputDto inputDto) {
 
         if (userRepository.findByEmail(inputDto.email) != null) {
-            throw new IllegalArgumentException("User with email " + inputDto.email + " already exists");
+            return null;
         }
 
         UserImpl user = new UserImpl(inputDto.firstName, inputDto.lastName, inputDto.email, inputDto.password,
@@ -43,25 +43,28 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public UserNoReservationDto updateUser(String uuid, UserInputDto inputDto) {
+        if (userRepository.findByEmail(inputDto.email) == null){
 
-        User user = userRepository.findByUuid(uuid);
+            User user = userRepository.findByUuid(uuid);
 
-        if (!inputDto.firstName.isBlank()) {
-            user.setFirstName(inputDto.firstName);
-        }
-        if (!inputDto.lastName.isBlank()) {
-            user.setLastName(inputDto.lastName);
-        }
-        if (!inputDto.email.isBlank()) {
-            user.setEmail(inputDto.email);
-        }
-        if (!inputDto.password.isBlank()) {
-            user.setPassword(inputDto.password);
-        }
+            if (!inputDto.firstName.isBlank()) {
+                user.setFirstName(inputDto.firstName);
+            }
+            if (!inputDto.lastName.isBlank()) {
+                user.setLastName(inputDto.lastName);
+            }
+            if (!inputDto.email.isBlank()) {
+                user.setEmail(inputDto.email);
+            }
+            if (!inputDto.password.isBlank()) {
+                user.setPassword(inputDto.password);
+            }
 
-        userRepository.updateUserByUuid(uuid, user.getFirstName(), user.getLastName(), user.getEmail(), user.getPasswordHash());
-        return new UserNoReservationDto(user);
+            userRepository.updateUserByUuid(uuid, user.getFirstName(), user.getLastName(), user.getEmail(), user.getPasswordHash());
+            return new UserNoReservationDto(user);
 
+        }
+        return null;
     }
 
     @Override
@@ -77,13 +80,20 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public UserDto getUserByUuid(String uuid) {
-        return new UserDto(userRepository.findByUuid(uuid));
+        if (userRepository.findByUuid(uuid) != null){
+            return new UserDto(userRepository.findByUuid(uuid));
+        }
+        return null;
     }
 
     @Override
     public boolean deleteUserByUuid(String uuid) {
-        userRepository.delete((UserImpl) userRepository.findByUuid(uuid));
-        return true;
+        try {
+            userRepository.delete((UserImpl) userRepository.findByUuid(uuid));
+            return true;
+        } catch (Exception e){
+            return false;
+        }
     }
 
 }

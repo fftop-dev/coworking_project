@@ -41,10 +41,10 @@ public class ReservationRestController {
     @PostMapping("/update-status/{uuid}")
     ResponseEntity<?> setReservationStatus(@CookieValue("token") String cookieToken, @PathVariable String uuid, @RequestParam String status) {
         if(reservationService.setReservationStatus(uuid, status)){
-            return ResponseEntity.ok().body("status changed");
+            return ResponseEntity.ok().body("success");
         }
         else{
-            return ResponseEntity.badRequest().body("there was an error");
+            return ResponseEntity.badRequest().body("There was an error");
         }
     }
 
@@ -63,19 +63,19 @@ public class ReservationRestController {
     ResponseEntity<?> deleteUserByUuid(@CookieValue("token") String cookieToken, @PathVariable String uuid){
         if (reservationService.checkReservationUuid(uuid, (String) jwtTokenProvider.getClaimsFromToken(cookieToken).get("sub"))){
             if(reservationService.deleteReservation(uuid)){
-                return ResponseEntity.ok().body("Reservation [" + uuid + "] has been deleted successfully");
+                return ResponseEntity.ok().body("success");
             }
         }
-        return ResponseEntity.ok().body("There was an error");
+        return ResponseEntity.badRequest().body("There was an error");
     }
 
     @Authorized(allowedRoles = {"MEMBER", "ADMIN"})
     @PostMapping("/add")
     ResponseEntity<?> addReservation(@CookieValue("token") String cookieToken, @RequestParam String date, @RequestParam String type) {
         if (reservationService.addReservation((String)jwtTokenProvider.getClaimsFromToken(cookieToken).get("sub"), date, type)){
-            return ResponseEntity.ok().body("Reservation has been added successfully");
+            return ResponseEntity.ok().body("success");
         }
-        return ResponseEntity.ok().body("There was an error");
+        return ResponseEntity.badRequest().body("There was an error");
     }
 
 }

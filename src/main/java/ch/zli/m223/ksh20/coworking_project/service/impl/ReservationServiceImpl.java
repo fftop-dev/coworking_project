@@ -56,16 +56,21 @@ public class ReservationServiceImpl implements ReservationService {
     @Override
     public boolean checkReservationUuid(String reservationUuid, String userUuid) {
         Reservation reservation = reservationRepository.findByUuid(reservationUuid);
-        if (reservation.getUser().getUuid().equals(userUuid)){
-            return true;
+        if (reservation != null){
+            if (reservation.getUser().getUuid().equals(userUuid)){
+                return true;
+            }
         }
         return false;
     }
 
     @Override
     public boolean deleteReservation(String uuid) {
-        reservationRepository.delete((ReservationImpl) reservationRepository.findByUuid(uuid));
-        return true;
+        if ((ReservationImpl) reservationRepository.findByUuid(uuid) != null){
+            reservationRepository.delete((ReservationImpl) reservationRepository.findByUuid(uuid));
+            return true;
+        }
+        return false;
     }
 
     @Override
