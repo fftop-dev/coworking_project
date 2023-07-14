@@ -29,3 +29,7 @@ To run the Coworking_Project and start the REST API, you need to have Java and S
 The Coworking_Project repository already contains test data in the code. 
 You can use this data for testing and exploration.
 If you want to change the test data, you can simply go to file `src/main/java/ch/zli/m223/ksh20/coworking_project/init/ServerInit.java` and change it.
+
+
+## Testing
+Testing is done in Postman. You can find the collection in the Repo as File M223.postman_collection.json
