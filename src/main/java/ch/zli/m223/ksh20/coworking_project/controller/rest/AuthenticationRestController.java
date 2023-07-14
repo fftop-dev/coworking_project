@@ -2,14 +2,10 @@ package ch.zli.m223.ksh20.coworking_project.controller.rest;
 
 import java.util.Map;
 
+import ch.zli.m223.ksh20.coworking_project.security.Authorized;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.CookieValue;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import ch.zli.m223.ksh20.coworking_project.security.JwtTokenProvider;
 import ch.zli.m223.ksh20.coworking_project.service.AuthenticationService;
@@ -59,9 +55,14 @@ public class AuthenticationRestController {
         return ResponseEntity.ok().body("Login successful");
     }
 
-    @GetMapping("/test")
-    public ResponseEntity<?> test(@CookieValue("token") String cookieToken) {
-        Map<String, ?> claims = jwtTokenProvider.getClaimsFromToken(cookieToken);
-        return ResponseEntity.ok().body(claims);
+    @Authorized(allowedRoles = {"MEMBER", "ADMIN"})
+    @DeleteMapping("/logout")
+    public ResponseEntity<?> logout(HttpServletResponse response, @CookieValue("token") String cookieToken) {
+        Cookie cookie = new Cookie("token", null);
+        cookie.setMaxAge(0);
+        cookie.setPath("/");
+        response.addCookie(cookie);
+
+        return ResponseEntity.ok().body("Logout successful");
     }
 }

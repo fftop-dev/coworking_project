@@ -4,15 +4,10 @@ import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
+import ch.zli.m223.ksh20.coworking_project.security.Authorized;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.CookieValue;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import ch.zli.m223.ksh20.coworking_project.controller.rest.dto.UserDto;
 import ch.zli.m223.ksh20.coworking_project.controller.rest.dto.UserInputDto;
@@ -31,12 +26,41 @@ public class UserRestController {
     @Autowired
     private JwtTokenProvider jwtTokenProvider;
 
+
+    @Authorized(allowedRoles = { "ADMIN" })
     @GetMapping()
     List<UserDto> getUserList() {
         return userService.getUserList().stream()
                 .map(UserDto::new)
                 .collect(Collectors.toList());
     }
+
+    @Authorized(allowedRoles = {"ADMIN"})
+    @GetMapping("/show/{uuid}")
+    ResponseEntity<?> getUserByUuid(@CookieValue("token") String cookieToken, @PathVariable String uuid){
+        UserDto user =  userService.getUserByUuid(uuid);
+        return ResponseEntity.ok().body(user);
+    }
+
+    @Authorized(allowedRoles = {"MEMBER", "ADMIN"})
+    @GetMapping("/show")
+    ResponseEntity<?> getLoggedInUser(@CookieValue("token") String cookieToken){
+        UserDto user =  userService.getUserByUuid((String) jwtTokenProvider.getClaimsFromToken(cookieToken).get("sub"));
+        return ResponseEntity.ok().body(user);
+    }
+
+
+    @Authorized(allowedRoles = {"ADMIN"})
+    @DeleteMapping("/delete/{uuid}")
+    ResponseEntity<?> deleteUserByUuid(@CookieValue("token") String cookieToken, @PathVariable String uuid){
+        if (!jwtTokenProvider.getClaimsFromToken(cookieToken).get("sub").equals(uuid)){
+            if (userService.deleteUserByUuid(uuid)){
+                return ResponseEntity.ok().body("User [" + uuid + "] has been deleted successfully");
+            }
+        }
+        return ResponseEntity.ok().body("There was an error");
+    }
+
 
     @PostMapping("/register")
     UserDto createUser(@RequestParam String firstName, @RequestParam String lastName, @RequestParam String email,
@@ -61,7 +85,7 @@ public class UserRestController {
         }
 
         return ResponseEntity.ok().body(updatedUser);
-
     }
+
 
 }

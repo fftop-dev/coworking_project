@@ -4,11 +4,7 @@ import java.time.LocalDate;
 import java.util.UUID;
 
 import ch.zli.m223.ksh20.coworking_project.model.Reservation;
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.ManyToOne;
+import jakarta.persistence.*;
 
 @Entity(name = "Reservations")
 public class ReservationImpl implements Reservation {
@@ -17,7 +13,7 @@ public class ReservationImpl implements Reservation {
     @Column(unique = true)
     private String uuid;
 
-    @ManyToOne
+    @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "user_uuid", referencedColumnName = "uuid", nullable = false)
     private UserImpl user;
 
