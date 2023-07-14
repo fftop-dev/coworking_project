@@ -21,11 +21,9 @@ public class AuthenticationWebController {
                                @RequestParam("password") String password,
                                Model model) {
         if (isValidUser(email, password)) {
-            // Erfolgreiche Anmeldung
             model.addAttribute("email", email);
             return "redirect:/index";
         } else {
-            // Ungültige Anmeldeinformationen
             model.addAttribute("error", "Invalid email or password");
             return "login";
         }
@@ -42,10 +40,7 @@ public class AuthenticationWebController {
                                       @RequestParam("email") String email,
                                       @RequestParam("password") String password,
                                       Model model) {
-        // Hier können Sie Ihre Registrierungs-Logik implementieren
-        // Verarbeiten Sie die übermittelten Registrierungsdaten und speichern Sie sie in Ihrer Datenbank oder an anderer Stelle
 
-        // Annahme: Registrierung erfolgreich
         model.addAttribute("firstname", firstname);
         model.addAttribute("lastname", lastname);
         model.addAttribute("email", email);
@@ -55,11 +50,9 @@ public class AuthenticationWebController {
 
     @GetMapping("/index")
     public String showIndexPage(Model model) {
-        // Hier können Sie weitere Modelldaten für die Indexseite hinzufügen
         return "index";
     }
 
-    // Beispiel-Methode zum Überprüfen der Benutzeranmeldeinformationen
     private boolean isValidUser(String email, String password) {
 
         if (email.equals("jenith.jeyaranjan@gmail.com") && password.equals("password")) {
