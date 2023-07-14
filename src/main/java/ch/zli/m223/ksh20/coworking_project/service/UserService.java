@@ -2,6 +2,7 @@ package ch.zli.m223.ksh20.coworking_project.service;
 
 import java.util.List;
 
+import ch.zli.m223.ksh20.coworking_project.controller.rest.dto.UserDto;
 import ch.zli.m223.ksh20.coworking_project.controller.rest.dto.UserInputDto;
 import ch.zli.m223.ksh20.coworking_project.controller.rest.dto.UserNoReservationDto;
 import ch.zli.m223.ksh20.coworking_project.model.User;
@@ -17,4 +18,8 @@ public interface UserService {
     User getUserByEmail(String email);
 
     User updateUser(User user);
+
+    UserDto getUserByUuid(String uuid);
+
+    boolean deleteUserByUuid(String uuid);
 }

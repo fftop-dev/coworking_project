@@ -3,6 +3,7 @@ package ch.zli.m223.ksh20.coworking_project.service.impl;
 import java.util.ArrayList;
 import java.util.List;
 
+import ch.zli.m223.ksh20.coworking_project.controller.rest.dto.UserDto;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -58,8 +59,7 @@ public class UserServiceImpl implements UserService {
             user.setPassword(inputDto.password);
         }
 
-        userRepository.updateUserByUuid(uuid, user.getFirstName(), user.getLastName(), user.getEmail(),
-                user.getPasswordHash());
+        userRepository.updateUserByUuid(uuid, user.getFirstName(), user.getLastName(), user.getEmail(), user.getPasswordHash());
         return new UserNoReservationDto(user);
 
     }
@@ -72,7 +72,18 @@ public class UserServiceImpl implements UserService {
     @Override
     public User updateUser(User user) {
         UserImpl userImpl = (UserImpl) user;
-
         return userRepository.save(userImpl);
     }
+
+    @Override
+    public UserDto getUserByUuid(String uuid) {
+        return new UserDto(userRepository.findByUuid(uuid));
+    }
+
+    @Override
+    public boolean deleteUserByUuid(String uuid) {
+        userRepository.delete((UserImpl) userRepository.findByUuid(uuid));
+        return true;
+    }
+
 }
