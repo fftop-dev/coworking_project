@@ -40,43 +40,7 @@
 				<span th:text="${user.role}"></span>
 			</td>
 			<td>
-				<button class="btn btn-primary update-btn">Edit</button>
-			</td>
-		</tr>
-		</tbody>
-	</table>
-
-	<h2>Reservations</h2>
-	<table class="table">
-		<thead>
-		<tr>
-			<th>ID</th>
-			<th>User</th>
-			<th>Date</th>
-			<th>Type</th>
-			<th>Status</th>
-			<th>Actions</th>
-		</tr>
-		</thead>
-		<tbody>
-		<tr th:each="reservation : ${reservations}">
-			<td>
-				<span class="field-value" th:text="${reservation.uuid}"></span>
-			</td>
-			<td>
-				<span class="field-value" th:text="${reservation.user.firstName} + ' ' + ${reservation.user.lastName}"></span>
-			</td>
-			<td>
-				<span class="field-value" th:text="${reservation.date}"></span>
-			</td>
-			<td>
-				<span class="field-value" th:text="${reservation.type}"></span>
-			</td>
-			<td>
-				<span class="field-value" th:text="${reservation.status}"></span>
-			</td>
-			<td>
-				<button class="btn btn-primary edit-btn">Edit</button>
+				<a class="btn btn-primary update-btn" th:href="@{/user_edit(userId=${user.id})}">Edit</a>
 			</td>
 		</tr>
 		</tbody>
